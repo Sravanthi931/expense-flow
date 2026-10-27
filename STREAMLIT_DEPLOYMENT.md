@@ -1,29 +1,22 @@
-# Streamlit deployment
+# ExpenseFlow on Streamlit
 
-This repository now includes a separate Streamlit expense analytics companion.
-It reads a CSV/TSV file uploaded by the visitor and runs in-memory analysis. It
-does not replace or deploy the existing React frontend or Spring Boot API, and
-does not need database credentials.
+The Streamlit page embeds the existing React application hosted at
+`https://expense-flow-thhg.vercel.app`. This keeps the original login,
+registration, dashboard, and application routes in the React app instead of
+reimplementing them as a reduced Streamlit-only analytics page.
 
-## Deploy on Streamlit Community Cloud
+## Deploy
 
-1. Push the repository to GitHub.
-2. Sign in to [Streamlit Community Cloud](https://share.streamlit.io/) and
-   choose **Create app**.
-3. Select the repository and branch, set **Main file path** to
-   `streamlit_app.py`, then deploy.
-4. After the build completes, copy the app URL from Streamlit. That is the
-   shareable link; the link cannot be assigned before Streamlit creates the app.
+1. Push the updated `streamlit_app.py`, `requirements.txt`, and this guide to the
+   GitHub branch connected to Streamlit Community Cloud.
+2. In Streamlit Community Cloud, open the deployed app and choose **Manage app**
+   then **Reboot app** (or redeploy the latest commit).
+3. Open the Streamlit app URL. Its page embeds the full React app and also
+   provides a button to open the React app in a new tab.
 
-Community Cloud installs dependencies from the root `requirements.txt`.
+The frontend URL is configured in `streamlit_app.py`.
 
-## Input data
-
-Upload a comma- or tab-delimited file with `expense_date` and `amount` columns.
-`date` is accepted in place of `expense_date`; `category` is optional. Optional
-`description` and `notes` columns appear in the transaction table. Download the
-CSV template from the app to see an example.
-
-Uploaded data is analyzed in the app session and is not written to this
-repository or database. Do not upload data you do not want processed by the
-hosted Streamlit service.
+The embedded React application still depends on its Spring Boot API and
+production database. Ensure the React deployment is built with its production
+API URL and the backend allows the React frontend origin in CORS. Streamlit
+does not host or replace those services.
